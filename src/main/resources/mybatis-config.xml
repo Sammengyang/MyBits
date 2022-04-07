@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--    引入数据库配置文件-->
+    <properties resource="database.properties"/>
+<!--    给实体类起别名-->
+    <typeAliases>
+<!--    typeAlias :设置某个类的别名
+        属性:
+            type : 需要设置别名的类
+            alias: 别名
+            若不设置 alias 该类具有默认的别名,就是类名(不区分大小写)
+-->
+<!--        <typeAlias type="com.zmy.pojo.User" alias="User"/>-->
+<!--        以包为单位,将包下所有类型设置为默认的类型别名,即类名-->
+        <package name="com.zmy.pojo"/>
+    </typeAliases>
+<!--    environments配置多个连接数据库的环境
+        属性 :
+            default : 用来设置默认使用的环境的id
+-->
+    <environments default="development">
+<!--
+        environment : 配置某个具体的环境
+        属性 ：
+            id ：表示连接数据库的环境的唯一标识，不可重复
+-->
+        <environment id="development">
+<!--
+        transactionManager ： 事务管理方式
+        属性：
+            type = JDBC / MANAGED
+            JDBC:当前环境中，执行SQL时，使用的是JDBC中原生的事务管理方式；手动管理事务
+            MANAGED ：被管理，例如spring
+-->
+            <transactionManager type="JDBC"/>
+<!--
+            dataSource ： 配置数据源
+            属性：
+                type：设置数据源的类型
+                type = POOLED / UNPPOOLED / JNDI
+                POOLED : 表示使用数据库连接池缓存数据库连接
+                UNPOOLED : 表示不使用数据库连接池
+                JNDI : 表示使用上下文中的数据源
+-->
+            <dataSource type="POOLED">
+<!--               property :连接数据库的信息 -->
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+<!--    引入映射文件-->
+    <mappers>
+<!--        <mapper resource="mappers/UserMapper.xml"/>-->
+<!--
+        以包为单位引入映射文件
+        要求:
+            1. mapper接口所在的包要和映射文件所在的包一致
+            2. mapper接口要和映射文件的名字一致
+-->
+        <package name="com.zmy.mapper"/>
+    </mappers>
+
+</configuration>
