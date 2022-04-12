@@ -1,8 +1,10 @@
 package com.zmy.mybatis.test;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zmy.mybatis.mapper.EmpMapper;
 import com.zmy.mybatis.pojo.Emp;
-import com.zmy.mybatis.pojo.EmpExample;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -46,7 +48,14 @@ public class MBGTest {
 
     @Test
     public void testPageHelper(){
-
+        Page<Object> page = PageHelper.startPage(6, 4);
+        List<Emp> empList = empMapper.selectByExample(null);
+        empList.forEach(System.out::println);
+        System.out.println("page = " + page);
+        // 方法二
+        PageInfo<Emp> pageInfo = new PageInfo<>(empList,3);
+        int[] navigatePages = pageInfo.getNavigatepageNums();
+        System.out.println("page2 = " + pageInfo);
     }
 
 
