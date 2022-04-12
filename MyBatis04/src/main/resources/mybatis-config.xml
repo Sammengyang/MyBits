@@ -5,10 +5,6 @@
 <configuration>
     <properties resource="db.properties"/>
 
-    <settings>
-        <setting name="mapUnderscoreToCamelCase" value="true"/>
-    </settings>
-    
     <typeAliases>
         <package name="com.zmy.mybatis"/>
     </typeAliases>

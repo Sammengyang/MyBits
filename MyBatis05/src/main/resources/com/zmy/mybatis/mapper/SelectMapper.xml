@@ -1,0 +1,55 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zmy.mybatis.mapper.SelectMapper">
+    <!--    开启二级缓存-->
+    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"></cache>
+    <!--     User getUserById(@Param(value = "uid") Integer uid)-->
+    <select id="getUserById" resultType="user">
+        select *
+        from user
+        where uid = #{uid}
+    </select>
+
+    <!--     List<User> getAllUser()-->
+    <select id="getAllUser" resultType="user">
+        select *
+        from user
+    </select>
+    <!--    Integer getCount()-->
+    <select id="getCount" resultType="int">
+        select count(*)
+        from user
+    </select>
+    <!--        Map<String,Object> getUserByIdToMap(@Param(value = "uid") Integer uid);-->
+    <select id="getUserByIdToMap" resultType="map">
+        select *
+        from user
+        where uid = #{uid}
+    </select>
+
+    <!--    List<Map<String, Object>> getAllUserToMap()-->
+    <select id="getAllUserToMap" resultType="map">
+        select *
+        from user
+    </select>
+    <!--    List<User> getUserByLike(@Param(value = "uname") String uname)-->
+    <select id="getUserByLike" resultType="user">
+        select * from user where uname like "%"#{uname}"%"
+        <!--select * from user where uname like '%${uname}%'-->
+        <!--select * from user where uname like concat('%',#{uname},'%')-->
+    </select>
+    <!--    int  deleteMore(@Param(value = "uids") String uids)-->
+    <delete id="deleteMore">
+        delete from USER where uid in (${uids});
+    </delete>
+<!--    List<User> getUserByTable(@Param("tableName") String tableName)-->
+    <select id="getUserByTable" resultType="user">
+        select * from ${tableName}
+    </select>
+<!--    int insertUser(User user)-->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="uid">
+        insert into user values(null,#{uname},#{upassword})
+    </insert>
+
+</mapper>

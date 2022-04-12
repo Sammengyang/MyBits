@@ -1,0 +1,62 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zmy.mybatis.mapper.EmpMapper">
+    <!--    开启二级缓存-->
+    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"></cache>
+    <!--    List<Emp> getAllEmp()-->
+    <select id="getAllEmp" resultMap="AllEmp">
+        select * from t_emp
+    </select>
+
+    <!-- Emp getEmpAndDept(@Param("eid")Integer eid)-->
+    <select id="getEmpAndDept" resultMap="EmpAndDeptTwo">
+        select * from t_emp te ,t_dept td where te.eid=#{eid} and te.did=td.did
+    </select>
+    <resultMap id="EmpAndDept" type="emp">
+        <id property="eid" column="eid"/>
+        <result property="empName" column="emp_Name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="dept.did" column="did"/>
+        <result property="dept.deptName" column="dept_name"/>
+    </resultMap>
+
+    <resultMap id="EmpAndDeptTwo" type="emp">
+        <id property="eid" column="eid"/>
+        <result property="empName" column="emp_Name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <association property="dept" javaType="dept">
+            <id property="did" column="did"/>
+            <result property="deptName" column="dept_name"></result>
+        </association>
+    </resultMap>
+<!--    Emp getEmpAndDeptByStepOne(@Param("eid")Integer eid)-->
+    <select id="getEmpAndDeptByStepOne" resultMap="empAndDeptByStept">
+        select * from t_emp where eid=#{eid}
+    </select>
+    <resultMap id="empAndDeptByStept" type="emp">
+        <id property="eid" column="eid"/>
+        <result property="empName" column="emp_Name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <association property="dept"
+                     select="com.zmy.mybatis.mapper.DeptMapper.getEmpAndDeptByStepTwo"
+                     column="did"
+                     fetchType="eager"></association>
+    </resultMap>
+<!--    List<Emp> getDeptAndEmpByStepTwo(@Param("did")Integer did);-->
+    <select id="getDeptAndEmpByStepTwo" resultMap="AllEmp">
+        select * from t_emp where did=#{did}
+    </select>
+    <!--    自定义映射关系-->
+    <resultMap id="AllEmp" type="emp">
+        <id property="eid" column="eid"></id>
+        <result property="empName" column="emp_Name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+    </resultMap>
+
+
+</mapper>

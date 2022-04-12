@@ -1,0 +1,35 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zmy.mybatis.mapper.UserMapper">
+<!--    开启二级缓存-->
+<!--     eviction ：淘汰策略 LRU最近最少使用策略
+         flushInterval ： 刷新频率
+         size ： 最大存储，对象个数
+         readOnly ： 对当前对象只读
+
+-->
+<!--    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"></cache>-->
+
+    <select id="getAllUser" resultMap="userRole">
+        SELECT * from`user` u,role r,user_role ur
+        where u.uid=ur.uid and r.roid=ur.roid
+    </select>
+
+    <resultMap id="userRole" type="user">
+        <id property="uid" column="uid"/>
+        <result property="uname" column="uname"></result>
+        <result property="upassword" column="upassword"></result>
+        <collection property="roles" ofType="role">
+            <id property="roid" column="roid"></id>
+            <result property="roname" column="roname"></result>
+            <result property="rodesc" column="rodesc"></result>
+            <result property="roaddTime" column="roaddTime"></result>
+            <result property="rostatus" column="rostatus"></result>
+        </collection>
+    </resultMap>
+<!--    User getUser(String uname)-->
+    <select id="getUser" resultType="user">
+        select * from user where uname=#{param1}
+    </select>
+</mapper>

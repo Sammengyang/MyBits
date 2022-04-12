@@ -2,9 +2,34 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.zmy.mybatis.mapper .UserMapper">
+<mapper namespace="com.zmy.mybatis.mapper.UserMapper">
     <select id="getCount" resultType="int">
         select count(*) from user
     </select>
 
+    <select id="getAllUser" resultType="user">
+        select * from user
+    </select>
+<!-- User getUserByid(Integer uid) -->
+    <select id="getUserByid" resultType="user">
+<!--         select * from user where uid = #{uid}-->
+           select * from user where uid = '${uid}'
+    </select>
+<!-- User Login(String uname,String upassword); -->
+    <select id="Login" resultType="user">
+        select * from user where uname=#{arg0} and upassword=#{arg1}
+    </select>
+<!--    User CheckLogin(Map<String,String> map);-->
+    <select id="CheckLogin" resultType="user">
+        select * from user where uname=#{uname} and upassword=#{upassword}
+    </select>
+<!--    int addUser(User user)-->
+    <insert id="addUser">
+        insert into user values(null,#{uname},#{upassword})
+    </insert>
+
+    <resultMap id="us" type="user">
+        <result property="abc" column="uid"/>
+        <result property="name" column="uname"/>
+    </resultMap>
 </mapper>
