@@ -23,7 +23,7 @@ public class TestDynamicSql {
 
     static DynamicMapper dynamicMapper = null;
 
-    @Before
+
     public void getMapper(){
         try {
             InputStream ras = Resources.getResourceAsStream("mybatis06-config.xml");
@@ -65,6 +65,33 @@ public class TestDynamicSql {
         System.out.println("i = " + i);
     }
 
+    @Test
+    public void testEHCache(){
+        InputStream ras = null;
+        try {
+            ras = Resources.getResourceAsStream("mybatis06-config.xml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(ras);
+        SqlSession sqlSession = sessionFactory.openSession(true);
+        dynamicMapper = sqlSession.getMapper(DynamicMapper.class);
+
+
+        System.out.println("第一次查询");
+        Emp emp = new Emp(1, null, 12);
+        List<Emp> empList = dynamicMapper.getEmpByCondition(emp);
+        empList.forEach(e-> System.out.println("e = " + e));
+        sqlSession.close();
+
+        SqlSession sqlSession1 = sessionFactory.openSession(true);
+        dynamicMapper = sqlSession1.getMapper(DynamicMapper.class);
+
+        System.out.println("第二次查询");
+        empList = dynamicMapper.getEmpByCondition(emp);
+        empList.forEach(e-> System.out.println("e = " + e));
+
+    }
 
 
 }
