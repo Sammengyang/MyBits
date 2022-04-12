@@ -13,6 +13,7 @@
         <module>MyBatis03</module>
         <module>MyBatis04</module>
         <module>MyBatis05</module>
+        <module>DynamicSQL</module>
     </modules>
 
     <properties>
