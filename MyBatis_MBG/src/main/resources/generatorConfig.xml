@@ -14,7 +14,7 @@
                         connectionURL="jdbc:mysql://localhost:3306/javatest"
                         userId="root"
                         password="123456">
-        </jdbcConnection>
+        </jdbcConnection
         <!-- javaBean的生成策略-->
         <javaModelGenerator targetPackage="com.zmy.mybatis.pojo" targetProject=".\src\main\java">
             <property name="enableSubPackages" value="true" />
